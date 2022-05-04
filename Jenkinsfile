@@ -52,18 +52,6 @@ pipeline {
         }
       }
     }
-    stage('Push Terraform scripts to AWS S3') {
-      steps {
-        withCredentials([
-          [ $class: 'AmazonWebServicesCredentialsBinding',
-            credentialsId: "AWS_CREDENTIALS",
-            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-          ]]){
-          s3Upload acl: 'Private', bucket: "${S3BUCKET}", includePathPattern: '*.tf*', excludePathPattern: '*.backup' , workingDir: 'terraform-scripts'
-        }
-      }
-    }
     stage('Terraform - K8s Cluster Deployment') {
       steps {
         withCredentials([
@@ -73,6 +61,18 @@ pipeline {
             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']
           ]){
           sh 'cd terraform-scripts && terraform init && terraform plan && terraform apply -auto-approve'
+        }
+      }
+    }
+    stage('Push Terraform scripts to AWS S3') {
+      steps {
+        withCredentials([
+          [ $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: "AWS_CREDENTIALS",
+            accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+            secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+          ]]){
+          s3Upload acl: 'Private', bucket: "${S3BUCKET}", includePathPattern: '*.tf*', excludePathPattern: '*.backup' , workingDir: 'terraform-scripts'
         }
       }
     }
