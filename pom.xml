@@ -14,7 +14,7 @@
   <artifactId>sample-nodejs</artifactId>
   <version>${revision}</version>
   <packaging>war</packaging>
-  <name>nodeApp</name>
+  <name>NodeApp</name>
   <description>Maven Node.js Sample Example</description>
 
   <properties>
