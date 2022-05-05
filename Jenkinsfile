@@ -8,11 +8,6 @@ pipeline {
     REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
   }
   stages {
-//    stage('Git Checkout') {
-//      steps {
-//        checkout poll: false, scm: [$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'myGithub', url: 'https://github.com/Prasanna7396/nodejs-app.git']]]
-//      }
-//    }
     stage('Build Application') {
       steps {
         sh 'mvn install'
